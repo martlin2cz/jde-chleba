@@ -20,8 +20,9 @@ function generate(pastries, spreads) {
 			var pastriesAlreadyIn = alreadyIn(pastries, pastryIndex);
 			var lastSpreadsAlreadyIn = alreadyIn(spreads, spreadIndex);
 
-			var listStr = list(pastriesAlreadyIn, spreads, lastSpreadsAlreadyIn);
-			result += listStr + "\n";
+			var terms = generateTerms(pastriesAlreadyIn, spreads, lastSpreadsAlreadyIn);
+			var termsStr = stringifyTerms(terms);
+			result += termsStr + "\n";
 	}
 	
 	return result;
@@ -29,8 +30,8 @@ function generate(pastries, spreads) {
 
 ///////////////////////////////////////////////////////////
 
-function list(pastries, allSpreads, lastSpreads) {
-	var result = "";
+function generateTerms(pastries, allSpreads, lastSpreads) {
+	var result = [];
 	for (var i = 0; i < pastries.length; i++) {
 		var pastry = pastries[i];
 
@@ -44,7 +45,7 @@ function list(pastries, allSpreads, lastSpreads) {
 			var spread = spreads[j];
 			
 			var term = createTerm(pastry, spread);
-			result += term + ", ";
+			result.push(term);
 		}
 	}
 
@@ -52,6 +53,31 @@ function list(pastries, allSpreads, lastSpreads) {
 }
 
 function createTerm(pastry, spread) {
+	return { 'pastry': pastry, 'spread': spread };
+}
+
+///////////////////////////////////////////////////////////
+
+function stringifyTerms(listOfTerms) {
+	var result = "";
+	for (var i = 0; i < listOfTerms.length; i++) {
+		var term = listOfTerms[i];
+		var termStr = stringifyTerm(term);
+		
+		result += termStr;
+		if (i + 1 < listOfTerms.length) {
+			result += ", ";
+		}
+		//TODO else " a "
+	}
+
+	return result;
+}
+
+function stringifyTerm(term) {
+	var pastry = term['pastry'];
+	var spread = term['spread'];
+
 	if (spread != "") {
 		return pastry + " " + spread;
 	} else {
@@ -60,6 +86,7 @@ function createTerm(pastry, spread) {
 }
 
 ///////////////////////////////////////////////////////////
+
 
 function alreadyIn(items, index) {
 	return items.slice(0, index + 1);
