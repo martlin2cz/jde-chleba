@@ -3,11 +3,14 @@
 	* m@rtlin, 22.8.2018
 	*
 	*/
+ 
+if (typeof exports !== 'undefined') {
+ 
+	exports.generate = function (pastries, spreads) {
+		return generate(pastries, spreads);
+	};
 
-exports.generate = function (pastries, spreads) {
-	return generate(pastries, spreads);
-};
-
+}
 
 function generate(pastries, spreads) {
 	var result = "";
