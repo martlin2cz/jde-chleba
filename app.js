@@ -1,3 +1,9 @@
 var generator = require('./js/generator.js');
 
-console.log(generator.generate(null, null)); //TODO params
+var pastries = ["Lorem", "Ipsum", "Dolor"];
+var spreads =  ["", "foo", "bar"];
+
+
+var result = generator.generate(pastries, spreads);
+
+console.log(result);
