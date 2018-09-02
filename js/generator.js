@@ -11,7 +11,7 @@ if (typeof exports !== 'undefined') {
 	};
 
 }
-
+/*
 function generate(pastries, spreads) {
 	var result = "";
 	
@@ -30,29 +30,73 @@ function generate(pastries, spreads) {
 	
 	return result;
 }
+*/
+
+function generate(pastries, spreads, beforeFirstLinePattern, firstLinePattern, iterLinePattern, afterLastLinePattern) {
+	var result = "";
+	
+	var line = renderLine(beforeFirstLinePattern, null, terms);
+	result += line + "\n";
+	
+	var count = pastries.length * spreads.length;
+	for (var i = 0; i < count; i++) {
+			var currentTerm = generateTerm(pastries, spreads, i);
+			var terms = generateTerms(pastries, spreads, i);
+
+			
+			var linePattern;
+			if (i == 0) {
+				linePattern = firstLinePattern;
+			} else {
+				linePattern = iterLinePattern;
+			}
+
+			var line = renderLine(linePattern, currentTerm, terms);
+			result += line + "\n";
+	}
+	
+	var line = renderLine(afterLastLinePattern, null, terms);
+	result += line + "\n";
+	return result;
+}
+
+function renderLine(linePattern, currentTerm, terms) {
+	var result = linePattern;
+	
+	if (currentTerm) {
+		var currentTermStr = stringifyTerm(currentTerm);
+		result = result.replace(/CURRENT\_TERM/g, currentTermStr);
+	}
+	
+	if (terms) {
+		var termsStr = stringifyTerms(terms);
+		result = result.replace(/TERMS/g, termsStr);
+	}
+	
+	return result;
+}
 
 ///////////////////////////////////////////////////////////
 
-function generateTerms(pastries, allSpreads, lastSpreads) {
+function generateTerms(pastries, spreads, count) {
 	var result = [];
-	for (var i = 0; i < pastries.length; i++) {
-		var pastry = pastries[i];
-
-		var spreads;
-		if (i + 1 < pastries.length) {
-			spreads = allSpreads;
-		} else {
-			spreads = lastSpreads;
-		}
-		for (var j = 0; j < spreads.length; j++) {
-			var spread = spreads[j];
-			
-			var term = createTerm(pastry, spread);
-			result.push(term);
-		}
+	for (var i = 0; i < count; i++) {
+		var term = generateTerm(pastries, spreads, i);
+		result.push(term);
 	}
 
 	return result;
+}
+
+function generateTerm(pastries, spreads, index) {
+	var pastryIndex = Math.floor(index / spreads.length);
+	var spreadIndex = index % spreads.length;
+
+
+	var pastry = pastries[pastryIndex];
+	var spread = spreads[spreadIndex];
+console.log(pastryIndex, spread);
+	return createTerm(pastry, spread);
 }
 
 function createTerm(pastry, spread) {

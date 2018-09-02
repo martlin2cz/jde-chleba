@@ -14,9 +14,16 @@ function generateButtonOnClick() {
 
 
 function doGenerate() {
+
 	var pastries = ["Lorem", "Ipsum", "Dolor"];
 	var spreads =  ["", "foo", "bar"];
 
-	return generate(pastries, spreads);
+	var beforeFirstLinePattern = "Ahoj,"; 
+	var firstLinePattern = "Jde TERMS a potká CURRENT_TERM. A CURRENT_TERM říká: 'TERMS' můžu s váma?";
+	var iterLinePattern = " A oni, že jo. Takže jde TERMS a potká CURRENT_TERM. A CURRENT_TERM říká: 'TERMS' můžu s váma?";
+	var afterLastLinePattern = "A oni, že ne. :-(";
+
+	var result = generate(pastries, spreads, beforeFirstLinePattern, firstLinePattern, iterLinePattern, afterLastLinePattern);
+	return result;
 }
 
